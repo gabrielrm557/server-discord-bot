@@ -1,7 +1,31 @@
 # 📜 Changelog
 Todas as mudanças importantes deste projeto serão documentadas aqui.
 
+> ⚠️ Versões antigas podem conter descrições mais técnicas.
+> A partir da V0.2.2, o changelog foi simplificado para melhor entendimento dos usuários.
+
+## V0.2.2 - 18/03/2026
+
+### Novidades
+- Melhor organização interna do bot (mais estabilidade e base para futuras melhorias)
+- Mensagens mais bonitas e padronizadas em vários comandos
+- Novo estilo de resposta para erros e confirmações
+
+### Melhorias nos comandos
+- `$quem` agora mostra o resultado de forma mais visual e com avatar do usuário sorteado
+- `$8ball` agora exibe sua pergunta junto com a resposta
+- `$cor` agora mostra erros e cores disponíveis de forma mais clara
+
+### Melhorias gerais
+- Respostas mais claras ao usar comandos incorretamente
+- Melhor consistência visual entre todos os comandos
+- Melhor base para futuras atualizações do bot
+
+
+
 ## V0.2.1 - 17/03/2026
+
+
 
 ### Added
 - Validação dinâmica de cores com base nos cargos do servidor
