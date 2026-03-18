@@ -1,3 +1,4 @@
 .env
+QA_CHECKLIST.md
 __pycache__/
 *.pyc
