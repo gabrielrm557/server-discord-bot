@@ -16,6 +16,9 @@ Todas as mudanças importantes deste projeto serão documentadas aqui.
 - `$8ball` agora exibe sua pergunta junto com a resposta
 - `$cor` agora mostra erros e cores disponíveis de forma mais clara
 
+### Correções
+- Corrigido prefixo incorreto do bot (restaurado para `$`)
+
 ### Melhorias gerais
 - Respostas mais claras ao usar comandos incorretamente
 - Melhor consistência visual entre todos os comandos
