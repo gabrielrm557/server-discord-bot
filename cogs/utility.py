@@ -80,7 +80,8 @@ class utility(commands.Cog):
             color=discord.Color.blue()
         )
 
-        embed.set_footer(text="Use $comando para executar • Desenvolvido por Gabriel")
+        embed.set_footer(text="Use $comando para executar • Desenvolvido por Arcanjo")
+
         embed.add_field(
             name='📌 Utilidades',
             value='**$ping** - verifica se o bot está online\n'
@@ -100,6 +101,7 @@ class utility(commands.Cog):
         embed.add_field(
             name='🎮 Diversão',
             value='**$roleta** - joga roleta russa (1/6 de chance de timeout)\n'
+                '**$rankroleta** - mostra suas estatísticas da roleta\n'
                 '**$8ball** - responde uma pergunta aleatoriamente\n'
                 '**$quem** <pergunta> - sorteia uma pessoa aleatória do servidor',
             inline=False
@@ -111,7 +113,7 @@ class utility(commands.Cog):
             inline=False
         )
 
-        await ctx.send(embed = embed)
+        await ctx.send(embed=embed)
 
     @commands.command()
     async def cor(self,ctx, cor: str = None):

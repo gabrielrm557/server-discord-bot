@@ -3,6 +3,7 @@ from discord.ext import commands
 from dotenv import load_dotenv
 import os
 import asyncio
+from database.roleta_db import DBroleta
 
 load_dotenv()
 token = os.getenv("TOKEN")
@@ -19,6 +20,7 @@ bot = commands.Bot(command_prefix="$",
 
 @bot.event
 async def on_ready():
+    DBroleta.criar_tabela()
     print("Bot online com sucesso!")
 
 

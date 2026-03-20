@@ -2,7 +2,7 @@ import discord
 
 class EmbedPadrao:
     @staticmethod
-    def criar(ctx, title=None, description=None, color=discord.Color.blue()):
+    def criar(ctx, title=None, description=None,user=None, color=discord.Color.blue()):
         embed = discord.Embed(
             title=title,
             description=description,
@@ -10,7 +10,12 @@ class EmbedPadrao:
         )
 
         embed.set_footer(text=f"Executado por {ctx.author.name}")
-        embed.set_thumbnail(url=ctx.author.display_avatar.url)
+
+        if user is None:
+            user = ctx.author
+
+        embed.set_thumbnail(url=user.display_avatar.url)
+
 
         return embed
     

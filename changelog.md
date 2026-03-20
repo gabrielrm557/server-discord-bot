@@ -4,6 +4,38 @@ Todas as mudanças importantes deste projeto serão documentadas aqui.
 > ⚠️ Versões antigas podem conter descrições mais técnicas.
 > A partir da V0.2.2, o changelog foi simplificado para melhor entendimento dos usuários.
 
+## V0.3.0 - 20/03/2026
+
+### Novidades
+- Novo sistema de estatísticas da roleta (dados agora são salvos permanentemente)
+- Novo comando `$rankroleta` para visualizar suas estatísticas
+- Agora é possível visualizar estatísticas de outros usuários usando menção
+
+### Sistema de roleta aprimorado
+- O bot agora registra:
+  - Número de partidas
+  - Número de mortes
+  - Número de sobrevivências
+  - Streak atual (quantas vezes sobreviveu seguidas)
+  - Melhor streak já alcançada
+- Dados são mantidos mesmo após reiniciar o bot
+
+### Melhorias nos comandos
+- `$rankroleta` exibe informações de forma visual e organizada
+- Avatar exibido corretamente para o usuário consultado
+- Respostas mais consistentes com o padrão visual do bot
+
+### Sistema anti-spam
+- Adicionado cooldown no comando `$roleta`
+- Evita uso excessivo em curto período de tempo
+
+### Melhorias internas
+- Integração com banco de dados SQLite
+- Estrutura de código preparada para futuras funcionalidades (ranking global, conquistas, etc.)
+- Melhor organização da lógica da roleta
+
+
+
 ## V0.2.2 - 18/03/2026
 
 ### Novidades

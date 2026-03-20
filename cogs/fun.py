@@ -3,17 +3,22 @@ import discord
 import random
 from datetime import timedelta
 from utils.embed import EmbedPadrao
-
+from database.roleta_db import DBroleta
 
 class Fun(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
     @commands.command()
-    async def roleta(self, ctx):
+    @commands.cooldown(1,2, commands.BucketType.user)
+    async def roleta(self, ctx,member:discord.Member = None):
+            user_id = ctx.author.id
+            server_id = ctx.guild.id
+            DBroleta.garantir_usuario(user_id,server_id)
             resultado = random.randint(1,6)
             morte = 1
             if resultado == morte:
+                DBroleta.registrar_morte(user_id,server_id)
                 embed = discord.Embed(
                 title="🎲 Roleta Russa",
                 description="💥 BANG! Você morreu e foi silenciado por 30s",
@@ -35,6 +40,7 @@ class Fun(commands.Cog):
                 await ctx.send(embed=embed,file=arquivo)
 
             else:
+                DBroleta.registrar_sobrevivencia(user_id,server_id)
                 embed = discord.Embed(
                     title="🎲 Roleta Russa",
                     description="*click*...Você sobreviveu por enquanto",
@@ -48,6 +54,43 @@ class Fun(commands.Cog):
                 print(f'[ROLETA] servidor={ctx.guild.name} usuario={ctx.author.name} resultado={resultado} status=sobreviveu')
 
                 await ctx.send(embed=embed,file=arquivo)
+
+    @roleta.error
+    async def roleta_error(self, ctx, error):
+        if isinstance(error, commands.CommandOnCooldown):
+            await ctx.send(
+                embed=EmbedPadrao.erro(
+                    ctx,
+                    f"Espere {error.retry_after:.1f} segundos antes de usar a roleta novamente."
+                )
+            )
+
+    @commands.command()
+    async def rankroleta(self, ctx, member: discord.Member = None):
+        if member is None:
+            member = ctx.author
+
+        user_id = member.id
+        server_id = ctx.guild.id
+
+        DBroleta.garantir_usuario(user_id, server_id)
+
+        resultado = DBroleta.obter_stats(user_id, server_id)
+
+        embed = EmbedPadrao.criar(
+            ctx=ctx,
+            title="🎲 Estatísticas da Roleta",
+            description=(
+                f"👤 {member.display_name}\n\n"
+                f"🎯 Partidas: {resultado[0]}\n"
+                f"☠️ Mortes: {resultado[1]}\n"
+                f"✅ Sobreviveu: {resultado[2]}\n"
+                f"🔥 Streak Atual: {resultado[3]}\n"
+                f"🏆 Melhor Streak: {resultado[4]}"
+            )
+        )
+
+        await ctx.send(embed=embed)
 
     @commands.command(aliases=["8ball"])            
     async def ball(self,ctx,*, pergunta:str = None):
