@@ -4,6 +4,14 @@ Todas as mudanças importantes deste projeto serão documentadas aqui.
 > ⚠️ Versões antigas podem conter descrições mais técnicas.
 > A partir da V0.2.2, o changelog foi simplificado para melhor entendimento dos usuários.
 
+## V0.3.1 - 20/03/2026
+
+### Correções
+- Corrigido avatar exibido no comando `$rankroleta`
+- Agora o embed mostra corretamente o avatar do usuário consultado
+
+
+
 ## V0.3.0 - 20/03/2026
 
 ### Novidades

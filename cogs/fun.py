@@ -87,7 +87,8 @@ class Fun(commands.Cog):
                 f"✅ Sobreviveu: {resultado[2]}\n"
                 f"🔥 Streak Atual: {resultado[3]}\n"
                 f"🏆 Melhor Streak: {resultado[4]}"
-            )
+            ),
+            user=member  # 👈 ESSA LINHA AQUI RESOLVE
         )
 
         await ctx.send(embed=embed)
