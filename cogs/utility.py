@@ -72,15 +72,15 @@ class utility(commands.Cog):
             await ctx.send("❌ Argumento inválido. Use @ ou um nome/ID válido.")
         print(f"[AVATAR] servidor={ctx.guild.name} usuario={ctx.author.name} erro : não encontrado usuario")
 
-    @commands.command(aliases=["ayuda"])
+    @commands.command(aliases=["ayuda", "help"])
     async def ajuda(self,ctx):
         embed = discord.Embed(
             title="📖 Comandos do Bot",
-            description="💬 Use os comandos abaixo para interagir com o bot\n",
+            description="💬 Use `$ajuda` ou `$help` para ver os comandos disponíveis\n",
             color=discord.Color.blue()
         )
 
-        embed.set_footer(text="Use $comando para executar • Desenvolvido por Arcanjo")
+        embed.set_footer(text="Use $comando para executar • Desenvolvido por Gabriel")
 
         embed.add_field(
             name='📌 Utilidades',
@@ -102,6 +102,8 @@ class utility(commands.Cog):
             name='🎮 Diversão',
             value='**$roleta** - joga roleta russa (1/6 de chance de timeout)\n'
                 '**$rankroleta** - mostra suas estatísticas da roleta\n'
+                '**$rankroleta @user** - ver stats de outra pessoa\n'
+                '**$toproleta** - mostra os destaques da roleta no servidor\n'
                 '**$8ball** - responde uma pergunta aleatoriamente\n'
                 '**$quem** <pergunta> - sorteia uma pessoa aleatória do servidor',
             inline=False
@@ -242,7 +244,7 @@ class utility(commands.Cog):
         await ctx.send(embed=embed)
 
 
-
+    
 
 
 

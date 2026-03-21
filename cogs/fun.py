@@ -10,7 +10,7 @@ class Fun(commands.Cog):
         self.bot = bot
 
     @commands.command()
-    @commands.cooldown(1,2, commands.BucketType.user)
+    @commands.cooldown(1,3, commands.BucketType.user)
     async def roleta(self, ctx,member:discord.Member = None):
             user_id = ctx.author.id
             server_id = ctx.guild.id
@@ -35,7 +35,7 @@ class Fun(commands.Cog):
                     await ctx.author.timeout(timedelta(seconds=30))
                 except discord.errors.Forbidden:
                     print(f'[ROLETA] servidor={ctx.guild.name} usuario={ctx.author.name} resultado={resultado} status=falha_erro_permissao')
-                    await ctx.send("⚠️ Bot não possui permissão para dar timeout neste neste usuario ⚠️")
+                    await ctx.send("⚠️ Bot não possui permissão para dar timeout neste usuario ⚠️")
 
                 await ctx.send(embed=embed,file=arquivo)
 
@@ -54,14 +54,24 @@ class Fun(commands.Cog):
                 print(f'[ROLETA] servidor={ctx.guild.name} usuario={ctx.author.name} resultado={resultado} status=sobreviveu')
 
                 await ctx.send(embed=embed,file=arquivo)
+            
 
     @roleta.error
     async def roleta_error(self, ctx, error):
+        tempo = round(error.retry_after, 1)
+        variacao_roleta = [
+            f"⏳ Espere {tempo}s antes de usar a roleta novamente.",
+            f"🎲 Calma aí... tente novamente em {tempo}s.",
+            f"⌛ A roleta ainda está recarregando... aguarde {tempo}s.",
+            f"🕒 Segura um pouco! Você poderá jogar novamente em {tempo}s.",
+            f"⚠️ Muito rápido! Espere {tempo}s para tentar de novo."
+            ]
+        mensagem = random.choice(variacao_roleta).format(error=error)
         if isinstance(error, commands.CommandOnCooldown):
             await ctx.send(
                 embed=EmbedPadrao.erro(
                     ctx,
-                    f"Espere {error.retry_after:.1f} segundos antes de usar a roleta novamente."
+                    mensagem
                 )
             )
 
@@ -88,8 +98,65 @@ class Fun(commands.Cog):
                 f"🔥 Streak Atual: {resultado[3]}\n"
                 f"🏆 Melhor Streak: {resultado[4]}"
             ),
-            user=member  # 👈 ESSA LINHA AQUI RESOLVE
+            user=member  
         )
+
+        await ctx.send(embed=embed)
+
+    @commands.command()
+    async def toproleta(self,ctx):
+        server_id = ctx.guild.id
+
+        resultado_mortes = DBroleta.top_mortes(server_id)
+        resultado_partidas = DBroleta.top_partidas(server_id)
+        resultado_sobrevivencias = DBroleta.top_sobrevivencias(server_id)
+        resultado_melhor_streak = DBroleta.top_streak(server_id)
+
+        def formatar_top(resultado, sufixo):
+            if not resultado:
+                return "Nenhum dado ainda."
+
+            medalhas = ["🥇", "🥈", "🥉", "🏅", "🏅"]
+            linhas = []
+
+            for i, (user_id, valor) in enumerate(resultado):
+                member = ctx.guild.get_member(user_id)
+                nome = member.display_name if member else f"ID {user_id}"
+                linhas.append(f"{medalhas[i]} **{nome}** — `{valor}` {sufixo}")
+
+            return "\n".join(linhas)
+
+        embed = discord.Embed(
+            title="🏆 Top Roleta do Servidor",
+            description="Veja quem mais se destacou na roleta por aqui.",
+            color=discord.Color.gold()
+        )
+
+        embed.add_field(
+            name="☠️ Mais mortes",
+            value=formatar_top(resultado_mortes, "mortes"),
+            inline=False
+        )
+
+        embed.add_field(
+            name="🎯 Mais partidas",
+            value=formatar_top(resultado_partidas, "partidas"),
+            inline=False
+        )
+
+        embed.add_field(
+            name="✅ Mais sobrevivências",
+            value=formatar_top(resultado_sobrevivencias, "sobrevivências"),
+            inline=False
+        )
+
+        embed.add_field(
+            name="🔥 Melhor streak",
+            value=formatar_top(resultado_melhor_streak, "de streak"),
+            inline=False
+        )
+
+        embed.set_footer(text=f"Executado por {ctx.author.name}")
 
         await ctx.send(embed=embed)
 

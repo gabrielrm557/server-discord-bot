@@ -4,6 +4,25 @@ Todas as mudanças importantes deste projeto serão documentadas aqui.
 > ⚠️ Versões antigas podem conter descrições mais técnicas.
 > A partir da V0.2.2, o changelog foi simplificado para melhor entendimento dos usuários.
 
+## V0.3.2 - 21/03/2026
+
+### Novidades
+- Novo comando `$toproleta` para mostrar os destaques da roleta no servidor
+
+### Melhorias nos comandos
+- `$help` agora funciona como atalho para `$ajuda`
+- `$toproleta` exibe rankings de mortes, partidas, sobrevivências e melhor streak
+- Mensagens de cooldown da roleta ficaram mais variadas e naturais
+
+### Correções
+- Agora o bot responde de forma mais clara quando um comando não existe
+
+### Melhorias gerais
+- Melhor experiência de uso no sistema de ajuda
+- Melhor apresentação das informações da roleta no servidor
+
+
+
 ## V0.3.1 - 20/03/2026
 
 ### Correções

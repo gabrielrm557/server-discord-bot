@@ -116,3 +116,79 @@ class DBroleta:
         conn.close()
 
         return resultado
+    
+    @staticmethod
+    def top_mortes(server_id):
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+    
+        cursor.execute("""
+        SELECT user_id, mortes
+        FROM roleta
+        WHERE server_id = ? AND mortes > 0
+        ORDER BY mortes DESC , user_id ASC
+        LIMIT 5
+         """,(server_id,))
+        
+        resultado = cursor.fetchall()
+
+        conn.close()
+
+        return resultado
+    
+    @staticmethod
+    def top_partidas(server_id):
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+    
+        cursor.execute("""
+        SELECT user_id, partidas
+        FROM roleta 
+        WHERE server_id = ? AND partidas > 0
+        ORDER BY partidas DESC , user_id ASC
+        LIMIT 5
+         """,(server_id,))
+        
+        resultado = cursor.fetchall()
+
+        conn.close()
+
+        return resultado
+    
+    @staticmethod
+    def top_sobrevivencias(server_id):
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+    
+        cursor.execute("""
+        SELECT user_id, sobrevivencias
+        FROM roleta
+        WHERE server_id = ? AND sobrevivencias > 0
+        ORDER BY sobrevivencias DESC , user_id ASC
+        LIMIT 5
+         """,(server_id,))
+        
+        resultado = cursor.fetchall()
+
+        conn.close()
+
+        return resultado
+    
+    @staticmethod
+    def top_streak(server_id):
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+    
+        cursor.execute("""
+        SELECT user_id, melhor_streak
+        FROM roleta
+        WHERE server_id = ? AND melhor_streak > 0
+        ORDER BY melhor_streak DESC , user_id ASC
+        LIMIT 5
+         """,(server_id,))
+        
+        resultado = cursor.fetchall()
+
+        conn.close()
+
+        return resultado
