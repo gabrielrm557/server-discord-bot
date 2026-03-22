@@ -1,19 +1,31 @@
 from discord.ext import commands
 import discord
 import random
-from datetime import timedelta
+from datetime import datetime,timedelta
 from utils.embed import EmbedPadrao
 from database.roleta_db import DBroleta
 
 class Fun(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.cooldown_sem_permissao = {}
 
     @commands.command()
     @commands.cooldown(1,3, commands.BucketType.user)
     async def roleta(self, ctx,member:discord.Member = None):
             user_id = ctx.author.id
             server_id = ctx.guild.id
+            
+            if user_id in self.cooldown_sem_permissao:
+                tempo_restante = (self.cooldown_sem_permissao[user_id] - datetime.utcnow()).total_seconds()
+
+                if tempo_restante > 0:
+                    await ctx.send(f"⚠️ Não consegui mutar você antes, aguarde {round(tempo_restante)}s da punição para tentar novamente.")
+                    return
+            
+                else:
+                    del self.cooldown_sem_permissao[user_id]
+
             DBroleta.garantir_usuario(user_id,server_id)
             resultado = random.randint(1,6)
             morte = 1
@@ -34,6 +46,7 @@ class Fun(commands.Cog):
                 try:
                     await ctx.author.timeout(timedelta(seconds=30))
                 except discord.errors.Forbidden:
+                    self.cooldown_sem_permissao[user_id] = datetime.utcnow() + timedelta(seconds=30)
                     print(f'[ROLETA] servidor={ctx.guild.name} usuario={ctx.author.name} resultado={resultado} status=falha_erro_permissao')
                     await ctx.send("⚠️ Bot não possui permissão para dar timeout neste usuario ⚠️")
 
@@ -54,7 +67,6 @@ class Fun(commands.Cog):
                 print(f'[ROLETA] servidor={ctx.guild.name} usuario={ctx.author.name} resultado={resultado} status=sobreviveu')
 
                 await ctx.send(embed=embed,file=arquivo)
-            
 
     @roleta.error
     async def roleta_error(self, ctx, error):

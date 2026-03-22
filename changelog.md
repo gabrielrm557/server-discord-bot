@@ -4,6 +4,23 @@ Todas as mudanças importantes deste projeto serão documentadas aqui.
 > ⚠️ Versões antigas podem conter descrições mais técnicas.
 > A partir da V0.2.2, o changelog foi simplificado para melhor entendimento dos usuários.
 
+## V0.3.3 - 22/03/2026
+
+### Correções
+- Corrigido comportamento da roleta quando o bot não possui permissão para aplicar timeout
+- Agora o resultado da roleta é exibido corretamente mesmo quando o bot não consegue silenciar o usuário
+- Adicionado cooldown de 30 segundos quando não é possível aplicar o timeout, evitando spam do comando
+
+### Melhorias na roleta
+- Melhor consistência no feedback visual ao morrer na roleta
+- Evita múltiplas tentativas seguidas quando a punição não pode ser aplicada
+
+### Melhorias gerais
+- Ajustes internos para tornar o sistema de punição mais estável
+- Preparação da base para futuras melhorias no sistema da roleta
+
+
+
 ## V0.3.2 - 21/03/2026
 
 ### Novidades

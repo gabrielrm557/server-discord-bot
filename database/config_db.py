@@ -21,17 +21,60 @@ class DBConfig:
         conn.close()
 
     @staticmethod
-    def set_channel():
-        pass
+    def set_channel(server_id,channel_id):
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+
+        cursor.execute(
+            "INSERT INTO server_config (server_id,channel_id) VALUES (?,?)",
+            (server_id,channel_id)
+        )
+
+        conn.commit()
+        conn.close()
     
     @staticmethod
-    def get_channel():
-        pass
+    def get_channel(server_id):
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+
+        cursor.execute(
+            "SELECT channel_id FROM server_config WHERE server_id = ?",
+            (server_id,)
+        )
+
+        resultado = cursor.fetchone()
+
+        conn.close()
+        
 
     @staticmethod
     def set_prefix(server_id,prefix):
-        pass
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+
+        cursor.execute(
+            "INSERT INTO server_config (server_id,prefix) VALUES (?,?)",
+            (server_id,prefix)
+        )
+
+        conn.commit()
+        conn.close()
 
     @staticmethod
     def get_prefix(server_id):
-        pass
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+
+        cursor.execute(
+            "SELECT prefix FROM server_config WHERE server_id = ?",
+            (server_id,)
+        )
+        resultado = cursor.fetchone()
+
+        conn.close()
+
+        if resultado is None:
+            return "$"
+        else:
+            return resultado[0]
