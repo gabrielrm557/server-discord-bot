@@ -4,6 +4,37 @@ Todas as mudanças importantes deste projeto serão documentadas aqui.
 > ⚠️ Versões antigas podem conter descrições mais técnicas.
 > A partir da V0.2.2, o changelog foi simplificado para melhor entendimento dos usuários.
 
+## V0.4.0 - 24/03/2026
+
+### Configuração por servidor
+- Adicionado sistema de configuração individual por servidor
+- Agora cada servidor pode definir seu próprio prefixo de comandos
+- Agora é possível restringir o uso dos comandos a um canal específico
+- Configurações são salvas de forma persistente no banco de dados
+
+### Novos comandos
+- `setprefix` permite alterar o prefixo do bot por servidor
+- `setchannel` permite definir um canal específico para comandos
+- `setchannel off` remove a restrição de canal configurado
+- `nyxconfig` mostra as configurações atuais do servidor
+
+### Melhorias de experiência
+- Comando `ajuda` agora utiliza prefixo dinâmico automaticamente
+- Bot informa o canal correto quando comandos são usados fora do canal configurado
+- Melhor feedback ao configurar prefixo e canal
+
+### Logs
+- Adicionados logs para comandos administrativos
+- Logs agora registram servidor, usuário e alterações de configuração
+- Melhor rastreamento de uso e alterações internas
+
+### Melhorias internas
+- Estrutura preparada para futuras configurações por servidor
+- Organização do sistema de configuração aprimorada
+- Base pronta para novos recursos configuráveis
+
+
+
 ## V0.3.3 - 22/03/2026
 
 ### Correções

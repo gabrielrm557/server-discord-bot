@@ -4,6 +4,8 @@ import random
 from datetime import datetime,timedelta
 from utils.embed import EmbedPadrao
 from database.roleta_db import DBroleta
+from database.config_db import DBConfig
+
 
 class Fun(commands.Cog):
     def __init__(self, bot):
@@ -13,6 +15,7 @@ class Fun(commands.Cog):
     @commands.command()
     @commands.cooldown(1,3, commands.BucketType.user)
     async def roleta(self, ctx,member:discord.Member = None):
+            print(f"[ROLETA] entrou no comando servidor={ctx.guild.name} usuario={ctx.author.name} canal={ctx.channel.id}")
             user_id = ctx.author.id
             server_id = ctx.guild.id
             
@@ -80,6 +83,7 @@ class Fun(commands.Cog):
             ]
         mensagem = random.choice(variacao_roleta).format(error=error)
         if isinstance(error, commands.CommandOnCooldown):
+            print(f'[ROLETA] servidor={ctx.guild.name} usuario={ctx.author.name} status=cooldown tempo={tempo}')
             await ctx.send(
                 embed=EmbedPadrao.erro(
                     ctx,
@@ -112,6 +116,11 @@ class Fun(commands.Cog):
             ),
             user=member  
         )
+
+        if member == ctx.author:
+            print(f"[RANKROLETA] servidor={ctx.guild.name} usuario={ctx.author.name} alvo=proprio_perfil")
+        else:
+            print(f"[RANKROLETA] servidor={ctx.guild.name} usuario={ctx.author.name} alvo={member.name}")
 
         await ctx.send(embed=embed)
 
@@ -170,14 +179,18 @@ class Fun(commands.Cog):
 
         embed.set_footer(text=f"Executado por {ctx.author.name}")
 
+        print(f"[TOPROLETA] servidor={ctx.guild.name} usuario={ctx.author.name}")
+
         await ctx.send(embed=embed)
 
     @commands.command(aliases=["8ball"])            
     async def ball(self,ctx,*, pergunta:str = None):
+        server_id = ctx.guild.id
+        prefix = DBConfig.get_prefix(server_id)
         if pergunta is None or pergunta.strip() == "":
             await ctx.send(embed=EmbedPadrao.erro(
                 ctx,
-                "Você precisa fazer uma pergunta.\n\nExemplo: `!8ball vou ficar rico?`"
+                f"Você precisa fazer uma pergunta.\n\nExemplo: `{prefix}8ball vou ficar rico?`"
             ))
             print(f'[8BALL] servidor={ctx.guild.name} usuario={ctx.author.name} status:erro pergunta_vazia')
             return
@@ -207,14 +220,18 @@ class Fun(commands.Cog):
         embed.set_image(url="attachment://8ball.png")    
         embed.set_footer(text=f"Executado por {ctx.author.name}")
 
+        print(f'[8BALL] servidor={ctx.guild.name} usuario={ctx.author.name} resultado={resultado} status=sucesso')
+
         await ctx.send(embed=embed,file=arquivo)
 
     @commands.command()
     async def quem(self,ctx, *, pergunta = None):
+        server_id = ctx.guild.id
+        prefix = DBConfig.get_prefix(server_id)
         if pergunta is None or pergunta.strip() == "": 
             await ctx.send(embed=EmbedPadrao.erro(
                 ctx,
-                "Você precisa fazer uma pergunta.\n\nExemplo: `!quem é o mais lindo do discord?`"
+                f"Você precisa fazer uma pergunta.\n\nExemplo: `{prefix}quem é o mais lindo do discord?`"
             ))
             print(f'[QUEM] servidor={ctx.guild.name} usuario={ctx.author.name} status=erro argumento_ausente')
             return
@@ -226,6 +243,7 @@ class Fun(commands.Cog):
                 ctx,
                 "Não encontrei membros válidos para sortear."
             ))
+            print(f'[QUEM] servidor={ctx.guild.name} usuario={ctx.author.name} status=erro_sem_membros_validos')
             return
 
         escolhido = random.choice(membros)
@@ -238,6 +256,8 @@ class Fun(commands.Cog):
 
         embed.set_footer(text=f"Executado por {ctx.author.name}")
         embed.set_thumbnail(url=escolhido.display_avatar.url)
+
+        print(f'[QUEM] servidor={ctx.guild.name} usuario={ctx.author.name} escolhido={escolhido.name} status=sucesso')
 
         await ctx.send(embed=embed)
 

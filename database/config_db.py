@@ -21,18 +21,31 @@ class DBConfig:
         conn.close()
 
     @staticmethod
-    def set_channel(server_id,channel_id):
+    def set_channel(server_id, channel_id):
         conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
 
         cursor.execute(
-            "INSERT INTO server_config (server_id,channel_id) VALUES (?,?)",
-            (server_id,channel_id)
+            "SELECT server_id FROM server_config WHERE server_id = ?",
+            (server_id,)
         )
+        resultado = cursor.fetchone()
+
+        if resultado is None:
+            cursor.execute(
+                "INSERT INTO server_config (server_id, channel_id) VALUES (?, ?)",
+                (server_id, channel_id)
+            )
+        else:
+            cursor.execute(
+                "UPDATE server_config SET channel_id = ? WHERE server_id = ?",
+                (channel_id, server_id)
+            )
 
         conn.commit()
         conn.close()
-    
+
+
     @staticmethod
     def get_channel(server_id):
         conn = sqlite3.connect(DB_PATH)
@@ -47,16 +60,32 @@ class DBConfig:
 
         conn.close()
         
+        if resultado is None:
+            return None
+        else:
+            return resultado[0]
 
     @staticmethod
-    def set_prefix(server_id,prefix):
+    def set_prefix(server_id, prefix):
         conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
 
         cursor.execute(
-            "INSERT INTO server_config (server_id,prefix) VALUES (?,?)",
-            (server_id,prefix)
+            "SELECT server_id FROM server_config WHERE server_id = ?",
+            (server_id,)
         )
+        resultado = cursor.fetchone()
+
+        if resultado is None:
+            cursor.execute(
+                "INSERT INTO server_config (server_id, prefix) VALUES (?, ?)",
+                (server_id, prefix)
+            )
+        else:
+            cursor.execute(
+                "UPDATE server_config SET prefix = ? WHERE server_id = ?",
+                (prefix, server_id)
+            )
 
         conn.commit()
         conn.close()
@@ -78,3 +107,18 @@ class DBConfig:
             return "$"
         else:
             return resultado[0]
+    
+    @staticmethod
+    def remove_channel(server_id):
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()  
+
+        cursor.execute('''
+            UPDATE server_config
+            SET channel_id = NULL
+            WHERE server_id = ?    
+            ''',(server_id,))
+        
+        conn.commit()
+        conn.close()
+
